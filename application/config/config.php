@@ -23,7 +23,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/expanses/';
+date_default_timezone_set('Asia/Jakarta');
+if (isset($_SERVER['HTTP_HOST'])) {
+    $base_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
+    $base_url .= "://".$_SERVER['HTTP_HOST'];
+    $base_url .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
+} else {
+    // Default base_url jika HTTP_HOST tidak terdeteksi
+    $base_url = 'http://localhost/expanses/';
+}
+$config['base_url'] = $base_url;
+$config['index_page'] = '';
 
 /*
 |--------------------------------------------------------------------------

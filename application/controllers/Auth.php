@@ -17,6 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         public function proses_login(){
             $email = $this->input->post('email');
             $password = md5($this->input->post('password'));
+
             $user = $this->Auth_model->login($email, $password);
             if ($user) {
                 $this->session->set_userdata([
@@ -37,12 +38,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
 
         public function proses_register(){
+            // Ambil data dari form  
+            $fullName = $this->input->post('fullName');  
+            $email = $this->input->post('email');  
+            $password = $this->input->post('password');  
+            $confirmPassword = $this->input->post('confirmPassword');
+            // Validasi password  
+            if ($password !== $confirmPassword) {  
+                $this->session->set_flashdata('error', 'Password tidak cocok.');  
+                redirect('auth/register');  
+            }  
+    
+            // Cek apakah email sudah terdaftar  
+            if ($this->User_model->email_exists($email)) {  
+                $this->session->set_flashdata('error', 'Email sudah terdaftar.');  
+                redirect('auth/register');  
+            }
             $data = [
-                'name' => $this->input->post('name'),
-                'email' => $this->input->post('email'),
-                'password' => md5($this->input->post('password')),
+                'name' => $fullName,
+                'email' => $email,
+                'password' => md5($password),
                 'created_at' => date('Y-m-d H:i:s')
             ];
+            
             if($this->Auth_model->register($data)){
                 $this->session->set_flashdata('success', 'Registrasi berhasil.');
                 redirect('Login');

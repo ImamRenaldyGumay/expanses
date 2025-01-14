@@ -71,30 +71,7 @@
                                             <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#Edit<?= $category->id ?>" onClick="editCategory(<?= $category->id ?>)"><i class="fas fa-pencil-alt"></i>Edit</button>  
                                             <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#Delete<?= $category->id ?>"><i class="fas fa-trash-alt"></i>Delete</button>  
                                         </td>  
-                                    </tr>  
-                        
-                                    <!-- Start Delete Modal -->  
-                                    <div class="modal fade" data-backdrop="static" id="Delete<?= $category->id ?>">  
-                                        <div class="modal-dialog">  
-                                            <div class="modal-content">  
-                                                <div class="modal-header">  
-                                                    <h5 class="modal-title">Delete Confirmation</h5>  
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">  
-                                                        <span aria-hidden="true">&times;</span>  
-                                                    </button>  
-                                                </div>  
-                                                <div class="modal-body">  
-                                                    Are you sure you want to delete this item?  
-                                                </div>  
-                                                <div class="modal-footer">  
-                                                    <button data-dismiss="modal" type="button" class="btn btn-default">Cancel</button>  
-                                                    <a href="<?= base_url('delete-category/'.$category->id) ?>" class="btn btn-danger">Hapus</a>  
-                                                </div>  
-                                            </div>  
-                                        </div>  
-                                    </div>  
-                                    <!-- End Delete Modal -->  
-                        
+                                    </tr>
                                 <?php endforeach; ?>  
                             <?php else: ?>  
                                 <tr>  
@@ -109,60 +86,27 @@
     </section>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Tambah kategori</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Form Tambah Kategori -->
-        <form method="post" action="<?= site_url('add-category'); ?>">
-            <div class="mb-3">
-                <label for="name" class="form-label">Nama Kategori: </label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="Nama Kategori" onkeydown="return isLetter(event)" autocomplete="off" required>
-            </div>
-            <div class="mb-3">
-                <label for="type" class="form-label">type</label>
-                <select name="type" class="form-control" required>
-                    <option value="" disabled selected>Pilih Jenis</option>
-                    <option value="income">Income</option>
-                    <option value="expense">Expense</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-success w-100">Simpan</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Edit Modal -->
-<?php foreach($categories as $category): ?>
-    <div class="modal fade" id="Edit<?= $category->id?>">
+<!-- Tambah Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit kategori</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Tambah kategori</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <!-- Form Tambah Kategori -->
-                <form method="post" action="<?= site_url('edit-category/'.$category->id); ?>">
-                    <input type="hidden" name="id" value="<?= $category->id?>">
+                <form method="post" action="<?= site_url('add-category'); ?>">
                     <div class="mb-3">
                         <label for="name" class="form-label">Nama Kategori: </label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Nama Kategori" onkeydown="return isLetter(event)" autocomplete="off" required value="<?= $category->name; ?>">
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Nama Kategori" onkeydown="return isLetter(event)" autocomplete="off" required>
                     </div>
                     <div class="mb-3">
                         <label for="type" class="form-label">type</label>
                         <select name="type" class="form-control" required>
-                            <option value="<?= $category->type?>" disabled selected><?= $category->type?></option>
+                            <option value="" disabled selected>Pilih Jenis</option>
                             <option value="income">Income</option>
                             <option value="expense">Expense</option>
                         </select>
@@ -172,30 +116,69 @@
             </div>
             </div>
         </div>
-        </div>
-<?php endforeach ?>
-<!-- Start Delete Modal -->
-    <div class="modal fade" data-backdrop="static" id="Delete<?= $category->id?>">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Delete Confirmation</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to delete this item?
-            </div>
-            <form action="DeleteRuangan">
-                <div class="modal-footer">
-                <button data-dismiss="modal" type="button" class="btn btn-default">Cancel</button>
-                <a href="<?= base_url('delete-category/'.$category->id) ?>" class="btn btn-danger">Hapus</a>
-                </div>
-            </form>
-            </div>
-        </div>
     </div>
+<!-- End Tambah Modal -->
+
+<!-- Edit Modal -->
+    <?php foreach($categories as $category): ?>
+        <div class="modal fade" id="Edit<?= $category->id?>">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit kategori</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form Tambah Kategori -->
+                    <form method="post" action="<?= site_url('edit-category/'.$category->id); ?>">
+                        <input type="hidden" name="id" value="<?= $category->id?>">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nama Kategori: </label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Nama Kategori" onkeydown="return isLetter(event)" autocomplete="off" required value="<?= $category->name; ?>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="type" class="form-label">type</label>
+                            <select name="type" class="form-control" required>
+                                <option value="<?= $category->type?>" disabled selected><?= $category->type?></option>
+                                <option value="income">Income</option>
+                                <option value="expense">Expense</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Simpan</button>
+                    </form>
+                </div>
+                </div>
+            </div>
+            </div>
+    <?php endforeach ?>
+<!-- End Edit Modal -->
+
+<!-- Start Delete Modal -->
+    <?php foreach($categories as $category): ?>
+        <div class="modal fade" data-backdrop="static" id="Delete<?= $category->id?>">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Delete Confirmation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this <strong><?= $category->name?></strong>?
+                </div>
+                <form action="DeleteRuangan">
+                    <div class="modal-footer">
+                    <button data-dismiss="modal" type="button" class="btn btn-default">Cancel</button>
+                    <a href="<?= base_url('delete-category/'.$category->id) ?>" class="btn btn-danger">Hapus</a>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    <?php endforeach?>
 <!-- End Delete Modal -->
 <script>
 function isLetter(event) {

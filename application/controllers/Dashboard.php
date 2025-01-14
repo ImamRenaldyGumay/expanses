@@ -5,7 +5,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         public function __construct() {
             parent::__construct();
-            $this->load->model('Dashboard_model', 'DM');
+            if (!$this->session->userdata('user_id')) {
+                redirect('Login');
+            }else{
+                $this->load->model('Dashboard_model', 'DM');
+            }
+            
         }
 
         public function index() {
@@ -21,6 +26,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
             // Load view
             $this->load->view('templates/header_dashboard', $data);
+            $this->load->view('templates/navbar_dashboard');
             $this->load->view('templates/sidebar_dashboard');
             $this->load->view('dashboard_view', $data);
             $this->load->view('templates/footer_dashboard');

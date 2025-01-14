@@ -7,7 +7,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
 
         public function login(){
-            $this->load->view('auth/login');
+            if ($this->session->userdata('logged_in')) {  
+                redirect('dashboard');  
+            } 
+            $data['title'] = 'Login Page';
+            $this->load->view('auth/login', $data);
         }
 
         public function proses_login(){
@@ -15,7 +19,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $password = md5($this->input->post('password'));
             $user = $this->Auth_model->login($email, $password);
             if ($user) {
-                $this->session->set_userdata('user_id', $user['id']);
+                $this->session->set_userdata([
+                    'user_id' => $user['id'],
+                    'name' => $user['name'],
+                    'email' => $user['email'],
+                    'logged_in' => TRUE
+                ]);
                 redirect('Dashboard');
             } else {
                 $this->session->set_flashdata('error', 'Email atau password salah.');

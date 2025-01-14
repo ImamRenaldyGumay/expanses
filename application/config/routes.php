@@ -66,6 +66,8 @@ $route ['view-transactions'] = 'Transactions/index';
 
 $route ['Category'] = 'Categories/index';
 $route ['add-category'] = 'Categories/add';
+$route ['edit-category/(:num)'] = 'Categories/edit/$1';
+$route ['delete-category/(:num)'] = 'Categories/delete/$1';
 
 $route ['report'] = 'Reports/index';
 $route ['report-by-category'] = 'Reports/by_category';

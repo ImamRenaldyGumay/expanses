@@ -18,6 +18,12 @@ class Category_model extends CI_Model {
         $this->db->insert('categories', $data);
     }
 
+    // Mengubah kategori
+    public function update_category($id, $data) {
+        $this->db->where('id', $id);
+        $this->db->update('categories', $data);
+    }
+
     // Menghapus kategori
     public function delete_category($id) {
         $this->db->where('id', $id);

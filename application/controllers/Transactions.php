@@ -37,7 +37,7 @@ class Transactions extends CI_Controller {
                 ];
 
                 $this->Transaction_model->add_income($data);
-                redirect('dashboard');
+                redirect('Dashboard');
             }
         }
 
@@ -67,7 +67,7 @@ class Transactions extends CI_Controller {
                 ];
 
                 $this->Transaction_model->add_expense($data);
-                redirect('dashboard');
+                redirect('Dashboard');
             }
         }
 

@@ -30,9 +30,11 @@
   <link rel="stylesheet" href="<?= base_url('assets/')?>plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="<?= base_url('assets/')?>plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Bootstrap Datepicker CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  
+
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">

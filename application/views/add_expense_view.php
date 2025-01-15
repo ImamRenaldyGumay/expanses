@@ -47,17 +47,19 @@
             </div>
             <div class="card-body">
                 <!-- Form -->
-                <form method="post" action="<?= base_url('add-expense') ?>">
+                <form method="post" action="<?= base_url('Transactions/expanse_process') ?>">
                     <!-- Input Jumlah -->
                     <div class="mb-3">
-                        <label for="amount" class="form-label">Jumlah</label>
+                        <label for="amount" class="form-label">Nominal (niminal 100)</label>
                         <input type="number" class="form-control" id="amount" name="amount" required>
+                        <small class="form-text text-muted">Hanya angka, minimal 100.</small>
                     </div>
                     
                     <!-- Input Deskripsi -->
                     <div class="mb-3">
                         <label for="description" class="form-label">Deskripsi</label>
-                        <input type="text" class="form-control" id="description" name="description" required>
+                        <textarea class="form-control" id="description" name="description" rows="4" maxlength="100" oninput="updateCharCount(this)" placeholder="Masukkan deskripsi..."></textarea>  
+                        <div class="char-count" id="charCount">100 karakter tersisa</div>
                     </div>
                     
                     <!-- Pilihan Kategori -->
@@ -91,3 +93,41 @@
         </div>
     </section>
 </div>
+<script>  
+    document.getElementById('amount').addEventListener('input', function (e) {  
+        // Hanya izinkan angka  
+        this.value = this.value.replace(/[^0-9]/g, '');  
+    });  
+
+    function submitForm() {  
+        const amountInput = document.getElementById('amount');  
+        let amount = parseInt(amountInput.value);  
+
+        // Cek apakah nilai minimal 100  
+        if (amount < 100) {  
+            alert('Jumlah minimal adalah 100.');  
+            return;  
+        }  
+
+        // Format menjadi satuan uang  
+        amountInput.value = formatCurrency(amount);  
+        alert('Jumlah yang dimasukkan: ' + amountInput.value);  
+    }  
+
+    function formatCurrency(value) {  
+        return 'Rp ' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");  
+    }  
+</script>  
+<script>  
+    function updateCharCount(textarea) {  
+        const maxLength = textarea.getAttribute('maxlength');  
+        const currentLength = textarea.value.length;  
+        const remainingChars = maxLength - currentLength;  
+        document.getElementById('charCount').innerText = remainingChars + ' karakter tersisa';  
+    }  
+
+    function submitForm() {  
+        const description = document.getElementById('description').value;  
+        alert('Deskripsi yang dimasukkan: ' + description);  
+    }  
+</script>  

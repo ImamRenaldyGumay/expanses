@@ -21,7 +21,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $data['total_expense'] = $this->DM->get_total_expense($user_id);
             $data['current_balance'] = $data['total_income'] - $data['total_expense'];
             $data['recent_transactions'] = $this->DM->get_recent_transactions($user_id);
-            // $data['user_id'] = $user_id;
             $data['title'] = 'Dashboard';
 
             // Load view

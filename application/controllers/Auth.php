@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         public function login(){
             if ($this->session->userdata('logged_in')) {  
-                redirect('dashboard');  
+                redirect('Dashboard');  
             } 
             $data['title'] = 'Login Page';
             $this->load->view('auth/login', $data);
@@ -20,21 +20,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
             $user = $this->Auth_model->login($email, $password);
             if ($user) {
-                $this->session->set_userdata([
-                    'user_id' => $user['id'],
-                    'name' => $user['name'],
-                    'email' => $user['email'],
-                    'logged_in' => TRUE
-                ]);
-                redirect('Dashboard');
+                $cek_kategori = $this->Auth_model->cek_kategori($user['id']);
+                if(empty($cek_kategori) && empty($cek_notifikasi)){
+                    $this->session->set_flashdata('error', 'Anda belum memilih kategori.');
+                    $this->session->set_userdata([
+                        'user_id' => $user['id'],
+                        'name' => $user['name'],
+                        'email' => $user['email'],
+                        'logged_in' => TRUE
+                    ]);
+                    redirect('Insert_Kategori', 'refresh');
+                }else{
+                    $this->session->set_userdata([
+                        'user_id' => $user['id'],
+                        'name' => $user['name'],
+                        'email' => $user['email'],
+                        'logged_in' => TRUE
+                    ]);
+                    $this->session->set_flashdata('success', 'Login berhasil.');
+                    redirect('Dashboard', 'refresh');
+                }
+                
             } else {
                 $this->session->set_flashdata('error', 'Email atau password salah.');
-                redirect('Login');
+                redirect('Login', 'refresh');
             }
         }
 
         public function register(){
-            $this->load->view('auth/register');
+            $data['title'] = 'Register Page';
+            $this->load->view('auth/register', $data);
         }
 
         public function proses_register(){
@@ -46,13 +61,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             // Validasi password  
             if ($password !== $confirmPassword) {  
                 $this->session->set_flashdata('error', 'Password tidak cocok.');  
-                redirect('auth/register');  
+                redirect('Register', 'refresh');  
             }  
     
             // Cek apakah email sudah terdaftar  
-            if ($this->User_model->email_exists($email)) {  
+            if ($this->Auth_model->email_exists($email)) {  
                 $this->session->set_flashdata('error', 'Email sudah terdaftar.');  
-                redirect('auth/register');  
+                redirect('Login', 'refresh');  
             }
             $data = [
                 'name' => $fullName,
@@ -60,19 +75,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 'password' => md5($password),
                 'created_at' => date('Y-m-d H:i:s')
             ];
-            
+
             if($this->Auth_model->register($data)){
                 $this->session->set_flashdata('success', 'Registrasi berhasil.');
-                redirect('Login');
+                redirect('Login', 'refresh');
             }else{
                 $this->session->set_flashdata('error', 'Email sudah terdaftar.');
-                redirect('Register');
+                redirect('Register', 'refresh');
             }
         }
 
         public function logout(){
-            $this->session->unset_userdata('user_id');
-            redirect('Login');
+            $this->session->sess_destroy();
+            redirect('Login', 'refresh');
         }
     }
 ?>

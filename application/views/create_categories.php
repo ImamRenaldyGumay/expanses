@@ -6,6 +6,26 @@
     <title><?= $title ?></title>  
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">  
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>  
+        // Fungsi untuk memvalidasi input  
+        function validateInput(event) {  
+            const input = event.target;  
+            const value = input.value;  
+  
+            // Regex untuk hanya huruf dan spasi  
+            const regex = /^[A-Za-z\s]*$/;   
+            // Cek jika input dimulai dengan spasi  
+            const startsWithSpace = /^\s/.test(value);  
+  
+            if (startsWithSpace) {  
+                input.setCustomValidity("Input tidak boleh dimulai dengan spasi.");  
+            } else if (!regex.test(value)) {  
+                input.setCustomValidity("Hanya huruf dan spasi yang diperbolehkan.");  
+            } else {  
+                input.setCustomValidity(""); // Reset pesan kesalahan  
+            }  
+        }  
+    </script>
     <style>  
         body {  
             display: flex;  
@@ -59,20 +79,30 @@
   
     <div class="login-container">  
         <img src="https://placehold.co/400" alt="Profile Image" class="profile-image">  
-        <h2>LOGIN</h2>  
-        <form action="<?= base_url('Auth/proses_login') ?>" method="post">  
+        <h2>Buat Kategori</h2>  
+        <form action="<?= base_url('SettingCatNot/add_process') ?>" method="post">  
+            <input type="text" disabled id="user_id" name="user_id" value="<?= $this->session->userdata('user_id');?>"> 
+            <h4>Pendapatan (Income)</h4>  
             <div class="form-group">  
-                <label for="email">Email</label>  
-                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>  
-            </div>  
-            <div class="form-group">  
-                <label for="password">Password</label>  
-                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>  
-            </div>  
-            <button type="submit" class="btn btn-login btn-block">Login</button>  
-            <div class="footer-text">  
-                <span>Don't have an account? <a href="<?= base_url('Register') ?>">REGISTER</a></span>  
-            </div>  
+            <label for="income1">Kategori Pendapatan 1</label>  
+            <input type="text" class="form-control" id="income1" name="income1" required oninput="validateInput(event)">  
+        </div>  
+        <div class="form-group">  
+            <label for="income2">Kategori Pendapatan 2</label>  
+            <input type="text" class="form-control" id="income2" name="income2" required oninput="validateInput(event)">  
+        </div>  
+  
+        <h4>Pengeluaran (Expense)</h4>  
+        <div class="form-group">  
+            <label for="expense1">Kategori Pengeluaran 1</label>  
+            <input type="text" class="form-control" id="expense1" name="expense1" required oninput="validateInput(event)">  
+        </div>  
+        <div class="form-group">  
+            <label for="expense2">Kategori Pengeluaran 2</label>  
+            <input type="text" class="form-control" id="expense2" name="expense2" required oninput="validateInput(event)">  
+        </div>
+            <button type="submit" class="btn btn-login btn-block">Tambah Kategori</button>  
+
         </form>  
     </div>   
     
@@ -98,10 +128,17 @@
             });
         </script>
     <?php endif; ?>
-  
+
     <!-- jQuery and Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>  
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>  
+    <script>
+        function isLetter(event) {
+            const key = event.key;
+            const regex = /^[a-zA-Z\s]$/;
+            return regex.test(key) || event.key === 'Backspace';
+        }
+    </script>
 </body>  
 </html>  
 

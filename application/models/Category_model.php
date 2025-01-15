@@ -4,16 +4,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Category_model extends CI_Model {
 
     // Mengambil semua kategori
-    public function get_all_categories() {
+    public function get_all_categories($user_id) {
+        $this->db->where('user_id', $user_id);
         $query = $this->db->get('categories');
         return $query->result();
     }
 
     // Menambahkan kategori baru
-    public function insert_category($name, $type) {
+    public function insert_category($user_id, $name, $type) {
         $data = [
+            'user_id' => $user_id,
             'name' => $name,
-            'type' => $type
+            'type' => $type,
+            'created_at' => date('Y-m-d H:i:s')
         ];
         $this->db->insert('categories', $data);
     }

@@ -3,8 +3,9 @@
 <head>  
     <meta charset="UTF-8">  
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <title>Register</title>  
+    <title><?= $title ?></title>  
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">  
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>  
         body {  
             display: flex;  
@@ -65,7 +66,7 @@
         <img src="https://placehold.co/400" alt="Profile Image" class="profile-image">  
         <h2>REGISTER</h2>  
         <p>Create an account by filling in the information below</p>  
-        <form action="<?= base_url('auth/register_process') ?>" method="post">  
+        <form action="<?= base_url('auth/proses_register') ?>" method="post">  
             <div class="form-group">  
                 <label for="fullName">Full Name</label>  
                 <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter your full name" required>  
@@ -87,41 +88,32 @@
                 <span>Already have an account? <a href="<?= base_url('Login');?>">LOGIN</a></span>  
             </div>  
         </form>  
-    </div>  
+    </div>   
+
+    <?php if ($this->session->flashdata('success')): ?>
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '<?= $this->session->flashdata('success') ?>',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        </script>
+    <?php endif; ?>
+
+    <?php if ($this->session->flashdata('error')): ?>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: '<?= $this->session->flashdata('error') ?>',
+            });
+        </script>
+    <?php endif; ?>
   
-    <!-- Toast Notification -->  
-    <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">  
-        <div class="toast" id="toast" style="position: absolute; top: 20px; right: 20px; z-index: 1050;">  
-            <div class="toast-header">  
-                <strong class="mr-auto" id="toast-title"></strong>  
-                <small class="text-muted" id="toast-time"></small>  
-                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">  
-                    <span aria-hidden="true">&times;</span>  
-                </button>  
-            </div>  
-            <div class="toast-body" id="toast-message"></div>  
-        </div>  
-    </div>  
-  
+    <!-- jQuery and Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>  
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>  
-    <script>  
-        $(document).ready(function() {  
-            // Menampilkan toast jika ada pesan flash  
-            <?php if ($this->session->flashdata('error')): ?>  
-                $('#toast-title').text('Error');  
-                $('#toast-message').text('<?= $this->session->flashdata('error'); ?>');  
-                $('#toast').toast({ delay: 3000 });  
-                $('#toast').toast('show');  
-            <?php endif; ?>  
-  
-            <?php if ($this->session->flashdata('success')): ?>  
-                $('#toast-title').text('Success');  
-                $('#toast-message').text('<?= $this->session->flashdata('success'); ?>');  
-                $('#toast').toast({ delay: 3000 });  
-                $('#toast').toast('show');  
-            <?php endif; ?>  
-        });  
-    </script>  
 </body>  
 </html>  

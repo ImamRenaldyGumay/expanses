@@ -57,6 +57,9 @@ $route['Login'] = 'Auth/login';
 $route['Register'] = 'Auth/register';
 $route['Logout'] = 'Auth/logout';
 
+$route['Insert_Kategori'] = 'SettingCatNot/add_new_index';
+$route['Insert_Notification'] = 'SettingCatNot/add_Notification';
+
 $route['Dashboard'] = 'dashboard';
 
 $route ['add-income'] = 'Transactions/add_income';

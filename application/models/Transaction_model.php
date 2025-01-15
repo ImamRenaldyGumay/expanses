@@ -46,40 +46,89 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         // Tambah income
         public function add_income($data) {
+            // Gunakan transaksi database untuk memastikan integritas data
+            $this->db->trans_start();
+
+            // Simpan data ke tabel income
             $this->db->insert('income', $data);
+
+            // Ambil ID dari data yang baru saja disimpan
             $income_id = $this->db->insert_id();
 
-            // Simpan ke tabel transactions
-            $transaction_data = [
-                'user_id' => $data['user_id'],
-                'type' => 'income',
-                'transaction_id' => $income_id,
-                'amount' => $data['amount'],
-                'description' => $data['description'],
-                'transaction_date' => $data['transaction_date']
-            ];
-            $this->db->insert('transactions', $transaction_data);
+            if ($income_id) {
+                // Data untuk tabel transactions
+                $transaction_data = [
+                    'user_id' => isset($data['user_id']) ? $data['user_id'] : null,
+                    'type' => 'income',
+                    'transaction_id' => $income_id,
+                    'amount' => isset($data['amount']) ? $data['amount'] : 0,
+                    'description' => isset($data['description']) ? $data['description'] : '',
+                    'transaction_date' => isset($data['transaction_date']) ? $data['transaction_date'] : date('Y-m-d H:i:s')
+                ];
+
+                // Simpan data ke tabel transactions
+                $this->db->insert('transactions', $transaction_data);
+            } else {
+                // Jika gagal mendapatkan ID dari tabel income
+                log_message('error', 'Gagal menyimpan data ke tabel income');
+            }
+
+            // Selesaikan transaksi database
+            $this->db->trans_complete();
+
+            // Periksa apakah transaksi berhasil
+            if ($this->db->trans_status() === FALSE) {
+                log_message('error', 'Transaksi gagal: ' . json_encode($data));
+                return false; // Kembalikan nilai false jika terjadi kesalahan
+            }
+
+            return true; // Kembalikan nilai true jika berhasil
         }
 
         // Tambah expense
         public function add_expense($data) {
+            // Gunakan transaksi database untuk memastikan integritas data
+            $this->db->trans_start();
+
+            // Simpan data ke tabel expense
             $this->db->insert('expense', $data);
+
+            // Ambil ID dari data yang baru saja disimpan
             $expense_id = $this->db->insert_id();
 
-            // Simpan ke tabel transactions
-            $transaction_data = [
-                'user_id' => $data['user_id'],
-                'type' => 'expense',
-                'transaction_id' => $expense_id,
-                'amount' => $data['amount'],
-                'description' => $data['description'],
-                'transaction_date' => $data['transaction_date']
-            ];
-            $this->db->insert('transactions', $transaction_data);
+            if ($expense_id) {
+                // Data untuk tabel transactions
+                $transaction_data = [
+                    'user_id' => isset($data['user_id']) ? $data['user_id'] : null,
+                    'type' => 'expense',
+                    'transaction_id' => $expense_id,
+                    'amount' => isset($data['amount']) ? $data['amount'] : 0,
+                    'description' => isset($data['description']) ? $data['description'] : '',
+                    'transaction_date' => isset($data['transaction_date']) ? $data['transaction_date'] : date('Y-m-d H:i:s')
+                ];
+
+                // Simpan data ke tabel transactions
+                $this->db->insert('transactions', $transaction_data);
+            } else {
+                // Jika gagal mendapatkan ID dari tabel expense
+                log_message('error', 'Gagal menyimpan data ke tabel expense');
+            }
+
+            // Selesaikan transaksi database
+            $this->db->trans_complete();
+
+            // Periksa apakah transaksi berhasil
+            if ($this->db->trans_status() === FALSE) {
+                log_message('error', 'Transaksi gagal: ' . json_encode($data));
+                return false; // Kembalikan nilai false jika terjadi kesalahan
+            }
+
+            return true; // Kembalikan nilai true jika berhasil
         }
 
         // Ambil kategori berdasarkan tipe (income/expense)
-        public function get_categories($type) {
+        public function get_categories($user_id, $type) {
+            $this->db->where('user_id', $user_id);
             $this->db->where('type', $type);
             $query = $this->db->get('categories');
             return $query->result();

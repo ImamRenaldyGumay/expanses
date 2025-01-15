@@ -1,73 +1,123 @@
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .content-wrapper{
+        padding: 10px 60px;
+    }
+    /* .header {
+        background-color: #ffffff;
+        padding: 20px;
+        border-bottom: 1px solid #dee2e6;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    } */
 
-<div class="p-6 sm:ml-64 mt-14">
-    <button onclick="window.history.back()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
-        Kembali
-    </button>
-    <h1 class="text-2xl font-bold mb-6">Laporan Transaksi</h1>
-
-    <!-- Form Filter -->
-    <form method="get" action="<?= site_url('report'); ?>" class="mb-4">
-        <div class="flex space-x-4">
-            <div class="flex-1">
-                <select name="type" class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500 p-2">
-                    <option value="">Semua Jenis</option>
-                    <option value="income">Income</option>
-                    <option value="expense">Expense</option>
-                </select>
-            </div>
-            <div class="flex-1">
-                <input type="date" name="start_date" class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500 p-2" placeholder="Tanggal Mulai">
-            </div>
-            <div class="flex-1">
-                <input type="date" name="end_date" class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500 p-2" placeholder="Tanggal Akhir">
-            </div>
-            <div class="flex-none">
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200">Tampilkan</button>
+    table.dataTable {
+        border: 1px solid #ccc;
+    }
+    table.dataTable thead th {
+        background-color: #f2f2f2;
+        color: #333;
+    }
+    table.dataTable tbody tr:hover {
+        background-color: #e0e0e0;
+    }
+</style>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Laporan Transaksi</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Blank Page</li>
+                    </ol>
+                </div>
             </div>
         </div>
-    </form>
+    </section>
 
-    <!-- Ringkasan -->
-    <div class="flex mb-4 space-x-4">
-        <div class="flex-1">
-            <div class="bg-green-100 text-green-800 p-4 rounded-md">Total Income: Rp <?= number_format($total_income, 0, ',', '.'); ?></div>
+    <!-- Main content -->
+    <section class="content">
+        
+        <!-- Default box -->
+        <!-- Form Filter -->  
+        <form method="get" action="<?= site_url('report'); ?>" class="mb-4">  
+            <div class="row mb-3">  
+                <div class="col">
+                    <div class="form-group">
+                        <select name="type" class="form-control">  
+                            <option value="">Semua Jenis</option>  
+                            <option value="income">Income</option>  
+                            <option value="expense">Expense</option>  
+                        </select> 
+                    </div>
+                </div>  
+                <div class="col">  
+                    <input type="date" name="start_date" class="form-control" placeholder="Tanggal Mulai"> 
+                    <small>Tanggal Mulai</small>
+                </div>  
+                <div class="col">  
+                    <input type="date" name="end_date" class="form-control" placeholder="Tanggal Akhir">  
+                </div>  
+                <div class="col-auto">  
+                    <button type="submit" class="btn btn-primary">Tampilkan</button>  
+                </div>  
+            </div>  
+        </form>
+        <!-- Ringkasan -->  
+        <div class="row mb-4">  
+            <div class="col">  
+                <div class="alert alert-success" role="alert">  
+                    Total Income: Rp <?= number_format($total_income, 0, ',', '.'); ?>  
+                </div>  
+            </div>  
+            <div class="col">  
+                <div class="alert alert-danger" role="alert">  
+                    Total Expense: Rp <?= number_format($total_expense, 0, ',', '.'); ?>  
+                </div>  
+            </div>  
         </div>
-        <div class="flex-1">
-            <div class="bg-red-100 text-red-800 p-4 rounded-md">Total Expense: Rp <?= number_format($total_expense, 0, ',', '.'); ?></div>
+        <!-- Card untuk Tabel Transaksi -->  
+        <div class="card">  
+            <div class="card-body">  
+                <h2 class="h5 card-title mb-4">Detail Transaksi</h2>  
+                <table id="transactionsTable" class="table table-bordered">  
+                    <thead class="table-light">  
+                        <tr>  
+                            <th>#</th>  
+                            <th>Jenis</th>  
+                            <th>Kategori</th>  
+                            <th>Jumlah</th>  
+                            <th>Tanggal</th>  
+                        </tr>  
+                    </thead>  
+                    <tbody>  
+                        <?php if (!empty($transactions)): ?>  
+                            <?php foreach ($transactions as $index => $transaction): ?>  
+                                <tr>  
+                                    <td><?= $index + 1; ?></td>  
+                                    <td><?= ucfirst($transaction->type); ?></td>  
+                                    <td><?= $transaction->category_name; ?></td>  
+                                    <td>Rp <?= number_format($transaction->amount, 0, ',', '.'); ?></td>  
+                                    <td><?= formatTanggal($transaction->transaction_date, 'long') ?></td>  
+                                </tr>  
+                            <?php endforeach; ?>  
+                        <?php else: ?>  
+                            <tr>  
+                                <td colspan="5" class="text-center">Tidak ada transaksi.</td>  
+                            </tr>  
+                        <?php endif; ?>  
+                    </tbody>  
+                </table>  
+            </div>  
         </div>
-    </div>
-
-    <!-- Card untuk Tabel Transaksi -->
-    <div class="bg-white shadow-md rounded-lg p-6">
-        <h2 class="text-lg font-semibold mb-4">Detail Transaksi</h2>
-        <table id="transactionsTable" class="min-w-full bg-white border border-gray-300">
-            <thead>
-                <tr class="bg-gray-100">
-                    <th class="py-2 px-4 border-b text-left">#</th>
-                    <th class="py-2 px-4 border-b text-left">Jenis</th>
-                    <th class="py-2 px-4 border-b text-left">Kategori</th>
-                    <th class="py-2 px-4 border-b text-left">Jumlah</th>
-                    <th class="py-2 px-4 border-b text-left">Tanggal</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (!empty($transactions)): ?>
-                    <?php foreach ($transactions as $index => $transaction): ?>
-                        <tr class="hover:bg-gray-50">
-                            <td class="py-2 px-4 border-b"><?= $index + 1; ?></td>
-                            <td class="py-2 px-4 border-b"><?= ucfirst($transaction->type); ?></td>
-                            <td class="py-2 px-4 border-b"><?= $transaction->category_name; ?></td>
-                            <td class="py-2 px-4 border-b">Rp <?= number_format($transaction->amount, 0, ',', '.'); ?></td>
-                            <td class="py-2 px-4 border-b"><?= formatTanggal($transaction->transaction_date, 'long') ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="5" class="text-center py-2">Tidak ada transaksi.</td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
-    </div>
-
+    </section>
 </div>

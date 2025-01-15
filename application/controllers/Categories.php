@@ -11,7 +11,8 @@ class Categories extends CI_Controller {
 
     // Menampilkan daftar kategori
     public function index() {
-        $data['categories'] = $this->Category_model->get_all_categories();
+        $user_id = $this->session->userdata('user_id');
+        $data['categories'] = $this->Category_model->get_all_categories($user_id);
         $data['title'] = 'Kelola Kategori';
         $this->load->view('templates/header_dashboard', $data);
         $this->load->view('templates/navbar_dashboard');
@@ -22,11 +23,12 @@ class Categories extends CI_Controller {
 
     // Menambahkan kategori
     public function add() {
+        $user_id = $this->session->userdata('user_id');
         $name = $this->input->post('name');
         $type = $this->input->post('type');
 
-        if ($name && $type) {
-            $this->Category_model->insert_category($name, $type);
+        if ($user_id && $name && $type) {
+            $this->Category_model->insert_category($user_id, $name, $type);
             redirect('Categories');
         } else {
             echo "Data tidak valid.";

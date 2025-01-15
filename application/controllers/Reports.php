@@ -14,13 +14,15 @@ class Reports extends CI_Controller {
         $type = $this->input->get('type');
         $start_date = $this->input->get('start_date');
         $end_date = $this->input->get('end_date');
+        $user_id = $this->session->userdata('user_id');
 
-        $data['transactions'] = $this->Report_model->get_transactions($type, $start_date, $end_date);
-        $data['total_income'] = $this->Report_model->get_total('income', $start_date, $end_date);
-        $data['total_expense'] = $this->Report_model->get_total('expense', $start_date, $end_date);
+        $data['transactions'] = $this->Report_model->get_transactions($user_id, $type, $start_date, $end_date);
+        $data['total_income'] = $this->Report_model->get_total($user_id, 'income', $start_date, $end_date);
+        $data['total_expense'] = $this->Report_model->get_total($user_id, 'expense', $start_date, $end_date);
 
         $data['title'] = 'Laporan Transaksi';
         $this->load->view('templates/header_dashboard', $data);
+        $this->load->view('templates/navbar_dashboard');
         $this->load->view('templates/sidebar_dashboard');
         $this->load->view('transaction_report', $data);
         $this->load->view('templates/footer_dashboard');
@@ -28,13 +30,19 @@ class Reports extends CI_Controller {
 
     // Laporan berdasarkan kategori
     public function by_category() {
+        $user_id = $this->session->userdata('user_id');
         $type = $this->input->get('type');
         $start_date = $this->input->get('start_date');
         $end_date = $this->input->get('end_date');
 
-        $data['reports'] = $this->Report_model->get_by_category($type, $start_date, $end_date);
+        $data['reports'] = $this->Report_model->get_by_category($user_id, $type, $start_date, $end_date);
         $data['type'] = $type;
+        $data['title'] = 'Laporan Berdasarkan Kategori';
+        $this->load->view('templates/header_dashboard', $data);
+        $this->load->view('templates/navbar_dashboard');
+        $this->load->view('templates/sidebar_dashboard');
         $this->load->view('report_by_category', $data);
+        $this->load->view('templates/footer_dashboard');
     }
 
     // Laporan bulanan

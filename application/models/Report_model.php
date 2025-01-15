@@ -4,9 +4,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Report_model extends CI_Model {
 
     // Mengambil transaksi berdasarkan filter
-    public function get_transactions($type = null, $start_date = null, $end_date = null) {
+    public function get_transactions($user_id, $type = null, $start_date = null, $end_date = null) {
         $this->db->select('transactions.id, transactions.type, transactions.amount, transactions.transaction_date, categories.name AS category_name');
         $this->db->from('transactions');
+        $this->db->where('transactions.user_id', $user_id);
         $this->db->join('categories', 'categories.id = transactions.transaction_id', 'left');
 
         if ($type) {
@@ -37,9 +38,10 @@ class Report_model extends CI_Model {
     }
 
     // Laporan berdasarkan kategori
-    public function get_by_category($type = null, $start_date = null, $end_date = null) {
+    public function get_by_category($user_id, $type = null, $start_date = null, $end_date = null) {
         $this->db->select('categories.name AS category_name, SUM(transactions.amount) AS total');
         $this->db->from('transactions');
+        $this->db->where('transactions.user_id', $user_id);
         $this->db->join('categories', 'categories.id = transactions.transaction_id', 'left');
         $this->db->group_by('categories.name');
 

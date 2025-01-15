@@ -36,10 +36,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
 
         // Transaksi terbaru
-        public function get_recent_transactions($user_id, $limit = 5) {
+        public function get_recent_transactions($user_id) {
             $this->db->where('user_id', $user_id);
             $this->db->order_by('transaction_date', 'DESC');
-            $this->db->limit($limit);
+            $this->db->order_by('id', 'DESC');
             $query = $this->db->get('transactions');
             return $query->result();
         }

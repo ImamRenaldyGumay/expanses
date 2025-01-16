@@ -46,12 +46,11 @@
 
     <!-- Main content -->
     <section class="content">
-        
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
                 <!-- Form Filter -->  
-                <form method="get" action="<?= site_url('report-by-month'); ?>" class="mb-4">  
+                <form method="get" action="<?= site_url('report-by-month'); ?>">  
                     <div class="row">
                         <div class="col-md-4">  
                             <input type="number" name="year" class="form-control" placeholder="Tahun" value="<?= $year; ?>" min="2000" max="<?= date('Y'); ?>" required>  
@@ -102,18 +101,26 @@
     <!-- Pie Chart -->  
     <div class="row">
         <div class="col-md-6">
-            <div class="d-flex flex-column align-items-center">
-                <h2>Income Chart</h2>
-                <div class="chart-container">
-                    <canvas id="incomeChart"></canvas>
+            <div class="card">
+                <div class="card-header d-flex justify-content-center">
+                    <h2 class="card-title">Income Chart</h2>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="incomeChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="col-md-6">
-            <div class="d-flex flex-column align-items-center">
-                <h2>Expense Chart</h2>
-                <div class="chart-container">
-                    <canvas id="expenseChart"></canvas>
+            <div class="card">
+                <div class="card-header d-flex justify-content-center">
+                    <h2 class="card-title">Expense Chart</h2>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="expenseChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                    </div>
                 </div>
             </div>
         </div>

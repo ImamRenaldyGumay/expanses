@@ -35,6 +35,7 @@
               </p>
             </a>
           </li>
+          <li class="nav-header">Categories</li>
           <li class="nav-item">
             <a href="<?= site_url('Categories')?>" class="nav-link <?= ($this->uri->uri_string() == 'Categories') ? 'active': "" ?>">
               <i class="nav-icon far fa-image"></i>
@@ -43,6 +44,7 @@
               </p>
             </a>
           </li>
+          <li class="nav-header">Reports</li>
           <li class="nav-item <?= ($this->uri->uri_string() == 'report') || ($this->uri->uri_string() == 'report-by-category') || ($this->uri->uri_string() == 'report-by-month') ? 'menu-open' : "";?>">
             <a href="#" class="nav-link <?= ($this->uri->uri_string() == 'report') || ($this->uri->uri_string() == 'report-by-category') || ($this->uri->uri_string() == 'report-by-month') ? 'active': ""; ?>">
               <i class="nav-icon fas fa-chart-pie"></i>
@@ -58,12 +60,12 @@
                   <p>Transaction Report</p>
                 </a>
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a href="<?= base_url('report-by-category')?>" class="nav-link <?= ($this->uri->uri_string() == 'report-by-category') ? 'active': "" ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Report By Category</p>
                 </a>
-              </li>
+              </li> -->
               <li class="nav-item">
                 <a href="<?= base_url('report-by-month')?>" class="nav-link <?= ($this->uri->uri_string() == 'report-by-month') ? 'active': "" ?>">
                   <i class="far fa-circle nav-icon"></i>
@@ -246,7 +248,6 @@
               </li>
             </ul>
           </li>
-          <li class="nav-header">EXAMPLES</li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

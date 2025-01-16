@@ -99,18 +99,34 @@
     <!-- Pie Chart -->  
     <div class="row">
         <div class="col-md-6">
-            <div class="d-flex flex-column align-items-center">
-                <h2>Income Chart</h2>
-                <div class="chart-container">
-                    <canvas id="incomeChart"></canvas>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Income Chart</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart">
+                        <canvas id="incomeChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="col-md-6">
-            <div class="d-flex flex-column align-items-center">
-                <h2>Expense Chart</h2>
-                <div class="chart-container">
-                    <canvas id="expenseChart"></canvas>
+            <div class="card">
+                <div class="card-header">
+                    <h2>Expense Chart</h2>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="expenseChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -152,6 +168,11 @@
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
         }
     });
 

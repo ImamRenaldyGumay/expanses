@@ -13,16 +13,19 @@
         justify-content: space-between;
         align-items: center;
     } */
+     .card-body {
+        overflow-x: auto;
+    }
 
-    table.dataTable {
-        border: 1px solid #ccc;
+    table {
+        width: 100%;
+        border-collapse: collapse;
     }
-    table.dataTable thead th {
-        background-color: #f2f2f2;
-        color: #333;
-    }
-    table.dataTable tbody tr:hover {
-        background-color: #e0e0e0;
+
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border: 1px solid #ddd;
     }
 </style>
 <!-- Content Wrapper. Contains page content -->

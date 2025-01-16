@@ -27,6 +27,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         'user_id' => $user['id'],
                         'name' => $user['name'],
                         'email' => $user['email'],
+                        'created_at' => $user['created_at'],
                         'logged_in' => TRUE
                     ]);
                     redirect('Insert_Kategori', 'refresh');
@@ -35,6 +36,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         'user_id' => $user['id'],
                         'name' => $user['name'],
                         'email' => $user['email'],
+                        'created_at' => $user['created_at'],
                         'logged_in' => TRUE
                     ]);
                     $this->session->set_flashdata('success', 'Login berhasil.');

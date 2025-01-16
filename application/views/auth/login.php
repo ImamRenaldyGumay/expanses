@@ -6,6 +6,7 @@
     <title><?= $title ?></title>  
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">  
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>  
         body {  
             display: flex;  
@@ -60,14 +61,16 @@
     <div class="login-container">  
         <img src="https://placehold.co/400" alt="Profile Image" class="profile-image">  
         <h2>LOGIN</h2>  
-        <form action="<?= base_url('Auth/proses_login') ?>" method="post">  
+        <form action="<?= base_url('Login') ?>" method="post">  
             <div class="form-group">  
                 <label for="email">Email</label>  
-                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>  
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email">  
+                <?= form_error('email', '<small class="text-danger">', '</small>'); ?>
             </div>  
             <div class="form-group">  
                 <label for="password">Password</label>  
-                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>  
+                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password">  
+                <?= form_error('password', '<small class="text-danger">', '</small>'); ?>
             </div>  
             <button type="submit" class="btn btn-login btn-block">Login</button>  
             <div class="footer-text">  

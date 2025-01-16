@@ -31,7 +31,7 @@
             margin-bottom: 20px;  
         }  
         .register-container h2 {  
-            margin: 20px 0;  
+            margin-top: 500px 0;  
         }  
         .form-group {  
             margin-bottom: 20px;  
@@ -66,22 +66,26 @@
         <img src="https://placehold.co/400" alt="Profile Image" class="profile-image">  
         <h2>REGISTER</h2>  
         <p>Create an account by filling in the information below</p>  
-        <form action="<?= base_url('auth/proses_register') ?>" method="post">  
+        <form action="<?= base_url('Register') ?>" method="post">  
             <div class="form-group">  
                 <label for="fullName">Full Name</label>  
-                <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter your full name" required>  
+                <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter your full name">  
+                <?= form_error('fullName', '<small class="text-danger">', '</small>'); ?>
             </div>  
             <div class="form-group">  
                 <label for="email">Email</label>  
-                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>  
+                <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email">  
+                <?= form_error('email', '<small class="text-danger">', '</small>'); ?>
             </div>  
             <div class="form-group">  
                 <label for="password">Password</label>  
-                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>  
+                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password">  
+                <?= form_error('password', '<small class="text-danger">', '</small>'); ?>
             </div>  
             <div class="form-group">  
                 <label for="confirmPassword">Confirm Password</label>  
-                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>  
+                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password">  
+                <?= form_error('confirmPassword', '<small class="text-danger">', '</small>'); ?>
             </div>  
             <button type="submit" class="btn btn-register btn-block">Register</button>  
             <div class="footer-text">  

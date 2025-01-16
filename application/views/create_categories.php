@@ -81,7 +81,7 @@
         <img src="https://placehold.co/400" alt="Profile Image" class="profile-image">  
         <h2>Buat Kategori</h2>  
         <form action="<?= base_url('SettingCatNot/add_process') ?>" method="post">  
-            <input type="text" disabled id="user_id" name="user_id" value="<?= $this->session->userdata('user_id');?>"> 
+            <input type="hidden" disabled id="user_id" name="user_id" value="<?= $this->session->userdata('user_id');?>"> 
             <h4>Pendapatan (Income)</h4>  
             <div class="form-group">  
             <label for="income1">Kategori Pendapatan 1</label>  

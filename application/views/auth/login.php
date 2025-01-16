@@ -59,7 +59,7 @@
 <body>  
   
     <div class="login-container">  
-        <img src="https://placehold.co/400" alt="Profile Image" class="profile-image">  
+        <img src="<?= base_url('assets/'); ?>dist/img/rb_1495.png" alt="Profile Image" class="profile-image">  
         <h2>LOGIN</h2>  
         <form action="<?= base_url('Login') ?>" method="post">  
             <div class="form-group">  

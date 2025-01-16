@@ -63,7 +63,7 @@
 <body>  
   
     <div class="register-container">  
-        <img src="https://placehold.co/400" alt="Profile Image" class="profile-image">  
+        <img src="<?= base_url('assets/'); ?>dist/img/rb_1495.png" alt="Profile Image" class="profile-image">  
         <h2>REGISTER</h2>  
         <p>Create an account by filling in the information below</p>  
         <form action="<?= base_url('Register') ?>" method="post">  

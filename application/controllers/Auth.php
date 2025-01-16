@@ -76,18 +76,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 $fullName = $this->input->post('fullName');  
                 $email = $this->input->post('email');  
                 $password = $this->input->post('password');  
-                // $confirmPassword = $this->input->post('confirmPassword');
-                // // Validasi password  
-                // if ($password !== $confirmPassword) {  
-                //     $this->session->set_flashdata('error', 'Password tidak cocok.');  
-                //     redirect('Register', 'refresh');  
-                // }  
-        
-                // // Cek apakah email sudah terdaftar  
-                // if ($this->Auth_model->email_exists($email)) {  
-                //     $this->session->set_flashdata('error', 'Email sudah terdaftar.');  
-                //     redirect('Login', 'refresh');  
-                // }
+                
                 $data = [
                     'name' => $fullName,
                     'email' => $email,
@@ -104,39 +93,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 }
             }
             
-        }
-
-        public function proses_register(){
-            // Ambil data dari form  
-            $fullName = $this->input->post('fullName');  
-            $email = $this->input->post('email');  
-            $password = $this->input->post('password');  
-            // $confirmPassword = $this->input->post('confirmPassword');
-            // // Validasi password  
-            // if ($password !== $confirmPassword) {  
-            //     $this->session->set_flashdata('error', 'Password tidak cocok.');  
-            //     redirect('Register', 'refresh');  
-            // }  
-    
-            // // Cek apakah email sudah terdaftar  
-            // if ($this->Auth_model->email_exists($email)) {  
-            //     $this->session->set_flashdata('error', 'Email sudah terdaftar.');  
-            //     redirect('Login', 'refresh');  
-            // }
-            $data = [
-                'name' => $fullName,
-                'email' => $email,
-                'password' => md5($password),
-                'created_at' => date('Y-m-d H:i:s')
-            ];
-
-            if($this->Auth_model->register($data)){
-                $this->session->set_flashdata('success', 'Registrasi berhasil.');
-                redirect('Login', 'refresh');
-            }else{
-                $this->session->set_flashdata('error', 'Email sudah terdaftar.');
-                redirect('Register', 'refresh');
-            }
         }
 
         public function logout(){

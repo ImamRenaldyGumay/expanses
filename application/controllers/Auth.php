@@ -65,7 +65,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $this->form_validation->set_rules('password', 'Password', 'required|trim|min_length[6]',[
                 'min_length' => 'Password minimal 6 karakter',
             ]);
-            $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'required|trim|matches[password]',[
+            $this->form_validation->set_rules('confirmPassword', 'Confirm Password', 'required|trim|matches[password]',[
                 'matches' => 'Password tidak cocok',
             ]);
             if ($this->form_validation->run() == FALSE){

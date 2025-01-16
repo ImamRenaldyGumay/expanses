@@ -20,45 +20,6 @@ class Transactions extends CI_Controller {
         $this->load->view('templates/footer_dashboard');
     }
 
-    // Form Tambah Income
-    // public function add_income() {
-    //     if ($this->input->post()) {
-    //         $this->form_validation->set_rules('amount', 'Jumlah', 'required|numeric');
-    //         $this->form_validation->set_rules('description', 'Deskripsi', 'required');
-    //         $this->form_validation->set_rules('transaction_date', 'Tanggal Transaksi', 'required');
-
-    //         if ($this->form_validation->run() == TRUE) {
-    //             $data = [
-    //                 'user_id' => $this->session->userdata('user_id'), // Sesuaikan dengan sesi user
-    //                 'amount' => $this->input->post('amount'),
-    //                 'description' => $this->input->post('description'),
-    //                 'category_id' => $this->input->post('category_id'),
-    //                 'transaction_date' => $this->input->post('transaction_date'),
-    //             ];
-
-    //             var_dump($data);
-    //             die();
-    //             $input = $this->Transaction_model->add_income($data);
-    //             if ($input){
-    //                 $this->session->set_flashdata('success', 'Pemasukan ditambahkan');
-    //                 redirect('Dashboard', 'refresh');
-    //             }else{
-    //                 $this->session->set_flashdata('error', 'Pemasukan gagal ditambahkan');
-    //                 redirect('add_income', 'refresh');
-    //             }
-    //         }
-    //     }
-
-    //     // Ambil daftar kategori income untuk dropdown
-    //     $user_id = $this->session->userdata('user_id');
-    //     $data['categories'] = $this->Transaction_model->get_categories($user_id, 'income');
-    //     $data['title'] = 'Tambah Pemasukan';
-    //     $this->load->view('templates/header_dashboard', $data);
-    //     $this->load->view('templates/sidebar_dashboard');
-    //     $this->load->view('add_income_view', $data);
-    //     $this->load->view('templates/footer_dashboard');
-    // }
-
     public function add_income(){
         $user_id = $this->session->userdata('user_id');
         $data['categories'] = $this->Transaction_model->get_categories($user_id, 'income');

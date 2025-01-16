@@ -24,6 +24,11 @@
     table.dataTable tbody tr:hover {
         background-color: #e0e0e0;
     }
+    /* .chart-container {
+        width: 300px;
+        height: 300px;
+        margin: 0 auto;
+    } */
 </style>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -32,13 +37,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="mb-4">Laporan Berdasarkan Kategori</h1>
+                    <h1 class="mb-4"><?= $title; ?></h1>
                 </div>
                 <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
+                    <!-- <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li class="breadcrumb-item active">Blank Page</li>
-                    </ol>
+                    </ol> -->
                 </div>
             </div>
         </div>
@@ -50,21 +55,14 @@
         <!-- Default box -->
         <!-- Filter -->  
         <form method="get" action="<?= site_url('reports/by_category'); ?>" class="mb-4">  
-            <div class="row">  
-                <div class="col-md-3">  
-                    <select name="type" class="form-control">  
-                        <option value="">Semua</option>  
-                        <option value="income" <?= isset($type) && $type == 'income' ? 'selected' : ''; ?>>Income</option>  
-                        <option value="expense" <?= isset($type) && $type == 'expense' ? 'selected' : ''; ?>>Expense</option>  
-                    </select>  
-                </div>  
-                <div class="col-md-3">  
+            <div class="row">
+                <div class="col-md-4">  
                     <input type="date" name="start_date" class="form-control" placeholder="Tanggal Mulai" value="<?= isset($start_date) ? $start_date : ''; ?>">  
                 </div>  
-                <div class="col-md-3">  
+                <div class="col-md-4">  
                     <input type="date" name="end_date" class="form-control" placeholder="Tanggal Akhir" value="<?= isset($end_date) ? $end_date : ''; ?>">  
                 </div>  
-                <div class="col-md-3">  
+                <div class="col-md-4">  
                     <button type="submit" class="btn btn-primary w-100">Tampilkan</button>  
                 </div>  
             </div>  
@@ -97,58 +95,93 @@
                 </table>  
             </div>  
         </div>
-        <!-- Pie Chart -->  
-        <h2 class="mt-5">Distribusi Berdasarkan Kategori</h2>  
-        <canvas id="categoryChart" width="400" height="400"></canvas>
     </section>
+    <!-- Pie Chart -->  
+    <div class="row">
+        <div class="col-md-6">
+            <div class="d-flex flex-column align-items-center">
+                <h2>Income Chart</h2>
+                <div class="chart-container">
+                    <canvas id="incomeChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex flex-column align-items-center">
+                <h2>Expense Chart</h2>
+                <div class="chart-container">
+                    <canvas id="expenseChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<script>  
-    const ctx = document.getElementById('categoryChart').getContext('2d');  
-    const categoryChart = new Chart(ctx, {  
-        type: 'pie',  
-        data: {  
-            labels: [  
-                <?php foreach ($reports as $report): ?>  
-                    '<?= htmlspecialchars($report->category_name); ?>',  
-                <?php endforeach; ?>  
-            ],  
-            datasets: [{  
-                label: 'Total',  
-                data: [  
-                    <?php foreach ($reports as $report): ?>  
-                        <?= $report->total; ?>,  
-                    <?php endforeach; ?>  
-                ],  
-                backgroundColor: [  
-                    'rgba(255, 99, 132, 0.2)',  
-                    'rgba(54, 162, 235, 0.2)',  
-                    'rgba(255, 206, 86, 0.2)',  
-                    'rgba(75, 192, 192, 0.2)',  
-                    'rgba(153, 102, 255, 0.2)',  
-                    'rgba(255, 159, 64, 0.2)'  
-                ],  
-                borderColor: [  
-                    'rgba(255, 99, 132, 1)',  
-                    'rgba(54, 162, 235, 1)',  
-                    'rgba(255, 206, 86, 1)',  
-                    'rgba(75, 192, 192, 1)',  
-                    'rgba(153, 102, 255, 1)',  
-                    'rgba(255, 159, 64, 1)'  
-                ],  
-                borderWidth: 1  
-            }]  
-        },  
-        options: {  
-            responsive: true,  
-            plugins: {  
-                legend: {  
-                    position: 'top',  
-                },  
-                title: {  
-                    display: true,  
-                    text: 'Distribusi Berdasarkan Kategori'  
-                }  
-            }  
-        }  
-    });  
-</script>  
+<script>
+    // Data untuk Income
+    const incomeLabels = <?php echo json_encode(array_column($income_reports, 'category')); ?>;
+    const incomeData = <?php echo json_encode(array_column($income_reports, 'total')); ?>;
+
+    // Data untuk Expense
+    const expenseLabels = <?php echo json_encode(array_column($expense_reports, 'category')); ?>;
+    const expenseData = <?php echo json_encode(array_column($expense_reports, 'total')); ?>;
+
+    // Chart Income
+    const incomeCtx = document.getElementById('incomeChart').getContext('2d');
+    new Chart(incomeCtx, {
+        type: 'pie',
+        data: {
+            labels: incomeLabels,
+            datasets: [{
+                label: 'Income',
+                data: incomeData,
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+        }
+    });
+
+    // Chart Expense
+    const expenseCtx = document.getElementById('expenseChart').getContext('2d');
+    new Chart(expenseCtx, {
+        type: 'pie',
+        data: {
+            labels: expenseLabels,
+            datasets: [{
+                label: 'Expense',
+                data: expenseData,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 205, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(255, 205, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+        }
+    });
+</script>

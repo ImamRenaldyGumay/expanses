@@ -61,6 +61,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     'user_id' => isset($data['user_id']) ? $data['user_id'] : null,
                     'type' => 'income',
                     'transaction_id' => $income_id,
+                    'category_id' => $data['category_id'],
                     'amount' => isset($data['amount']) ? $data['amount'] : 0,
                     'description' => isset($data['description']) ? $data['description'] : '',
                     'transaction_date' => isset($data['transaction_date']) ? $data['transaction_date'] : date('Y-m-d H:i:s')
@@ -102,6 +103,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     'user_id' => isset($data['user_id']) ? $data['user_id'] : null,
                     'type' => 'expense',
                     'transaction_id' => $expense_id,
+                    'category_id' => $data['category_id'],
                     'amount' => isset($data['amount']) ? $data['amount'] : 0,
                     'description' => isset($data['description']) ? $data['description'] : '',
                     'transaction_date' => isset($data['transaction_date']) ? $data['transaction_date'] : date('Y-m-d H:i:s')

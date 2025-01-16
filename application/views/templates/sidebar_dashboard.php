@@ -43,8 +43,8 @@
               </p>
             </a>
           </li>
-          <li class="nav-item <?= ($this->uri->uri_string() == 'report') || ($this->uri->uri_string() == 'report-by-category') ? 'menu-open' : "";?>">
-            <a href="#" class="nav-link <?= ($this->uri->uri_string() == 'report') || ($this->uri->uri_string() == 'report-by-category') ? 'active': ""; ?>">
+          <li class="nav-item <?= ($this->uri->uri_string() == 'report') || ($this->uri->uri_string() == 'report-by-category') || ($this->uri->uri_string() == 'report-by-month') ? 'menu-open' : "";?>">
+            <a href="#" class="nav-link <?= ($this->uri->uri_string() == 'report') || ($this->uri->uri_string() == 'report-by-category') || ($this->uri->uri_string() == 'report-by-month') ? 'active': ""; ?>">
               <i class="nav-icon fas fa-chart-pie"></i>
               <p>
                 Report
@@ -65,9 +65,15 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../../index3.html" class="nav-link">
+                <a href="<?= base_url('report-by-month')?>" class="nav-link <?= ($this->uri->uri_string() == 'report-by-month') ? 'active': "" ?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v3</p>
+                  <p>Report By Month</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= base_url('report-by-year')?>" class="nav-link <?= ($this->uri->uri_string() == 'report-by-year') ? 'active': "" ?>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Report By Year</p>
                 </a>
               </li>
             </ul>

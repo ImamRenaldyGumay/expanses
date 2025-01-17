@@ -84,11 +84,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     'created_at' => date('Y-m-d H:i:s')
                 ];
 
-                if($this->Auth_model->register($data)){
-                    $this->session->set_flashdata('success', 'Registrasi berhasil.');
+                $register = $this->Auth_model->register($data);
+                if($register){
+                    $this->session->set_flashdata('success', 'Registration successful.');
                     redirect('Login', 'refresh');
                 }else{
-                    $this->session->set_flashdata('error', 'Email sudah terdaftar.');
+                    $this->session->set_flashdata('error', 'Registration failed.');
                     redirect('Register', 'refresh');
                 }
             }

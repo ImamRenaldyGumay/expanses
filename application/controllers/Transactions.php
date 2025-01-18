@@ -8,6 +8,7 @@ class Transactions extends CI_Controller {
         $this->load->model('Transaction_model');
         $this->load->helper('url');
         $this->load->library('form_validation');
+        $this->load->library('email');
     }
 
     // Melihat daftar transaksi
@@ -81,6 +82,14 @@ class Transactions extends CI_Controller {
         $input = $this->Transaction_model->add_expense($data);
         if ($input){
             $this->session->set_flashdata('success', 'Pengeluaran ditambahkan');
+
+            // kirim email
+            $this->email->from('from@example.com', 'Your Name');
+            $this->email->to('to@example.com');
+            $this->email->subject('Email Test');
+            $this->email->message('Testing the email class.');
+            $this->email->send();
+
             redirect('Dashboard', 'refresh');
         }else{
             $this->session->set_flashdata('error', 'Pengeluaran gagal ditambahkan');

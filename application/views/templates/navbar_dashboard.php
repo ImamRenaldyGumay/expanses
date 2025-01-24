@@ -20,7 +20,6 @@
     
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
-        
         <li class="nav-item dropdown user-menu">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
                 <img src="<?= base_url('assets/')?>dist/img/user2-160x160.jpg" class="user-image img-circle elevation-2" alt="User Image">

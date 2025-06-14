@@ -7,7 +7,7 @@ class Auth extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('User_model');
+        $this->load->model('Auth_model');
     }
 
     public function index()
@@ -42,43 +42,37 @@ class Auth extends CI_Controller
             $remember = $this->input->post('remember');
 
             // Cek user di database
-            $user = $this->User_model->get_user_by_email($email);
+            $user = $this->Auth_model->login($email, $password);
 
             if ($user) {
-                // Verifikasi password
-                if (password_verify($password, $user['password'])) {
-                    // Set session
-                    $user_data = array(
-                        'user_id' => $user['id'],
-                        'email' => $user['email'],
-                        'name' => $user['first_name'] . ' ' . $user['last_name'],
-                        'role' => $user['role'],
-                        'logged_in' => TRUE
-                    );
-                    $this->session->set_userdata($user_data);
+                // Set session
+                $user_data = array(
+                    'user_id' => $user['id'],
+                    'email' => $user['email'],
+                    'name' => $user['first_name'] . ' ' . $user['last_name'],
+                    'role' => $user['role'],
+                    'logged_in' => TRUE
+                );
+                $this->session->set_userdata($user_data);
 
-                    // Set remember me cookie jika dicentang
-                    if ($remember) {
-                        $this->set_remember_cookie($user['id']);
-                    }
+                // Set remember me cookie jika dicentang
+                if ($remember) {
+                    $this->set_remember_cookie($user['id']);
+                }
 
-                    // Redirect berdasarkan role
-                    switch ($user['role']) {
-                        case 'admin':
-                            redirect('admin/dashboard');
-                            break;
-                        case 'manager':
-                            redirect('manager/dashboard');
-                            break;
-                        default:
-                            redirect('user/dashboard');
-                    }
-                } else {
-                    $this->session->set_flashdata('error', 'Password salah!');
-                    redirect('auth/login');
+                // Redirect berdasarkan role
+                switch ($user['role']) {
+                    case 'admin':
+                        redirect('admin/dashboard');
+                        break;
+                    case 'manager':
+                        redirect('manager/dashboard');
+                        break;
+                    default:
+                        redirect('user/dashboard');
                 }
             } else {
-                $this->session->set_flashdata('error', 'Email tidak ditemukan!');
+                $this->session->set_flashdata('error', 'Email atau password salah!');
                 redirect('auth/login');
             }
         }
@@ -93,7 +87,7 @@ class Auth extends CI_Controller
         $this->form_validation->set_rules('first_name', 'Nama Depan', 'required|trim');
         $this->form_validation->set_rules('last_name', 'Nama Belakang', 'required|trim');
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email|trim|is_unique[users.email]');
-        $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]|trim');
+        $this->form_validation->set_rules('password', 'Password', 'required|min_length[8]|trim');
         $this->form_validation->set_rules('confirm_password', 'Konfirmasi Password', 'required|matches[password]|trim');
 
         if ($this->form_validation->run() == FALSE) {
@@ -106,12 +100,12 @@ class Auth extends CI_Controller
                 'first_name' => $this->security->xss_clean($this->input->post('first_name')),
                 'last_name' => $this->security->xss_clean($this->input->post('last_name')),
                 'email' => $this->security->xss_clean($this->input->post('email')),
-                'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
+                'password' => $this->input->post('password'),
                 'role' => 'user', // Default role untuk user baru
                 'created_at' => date('Y-m-d H:i:s')
             );
 
-            if ($this->User_model->create_user($data)) {
+            if ($this->Auth_model->register($data)) {
                 $this->session->set_flashdata('success', 'Registrasi berhasil! Silakan login.');
                 redirect('auth/login');
             } else {
@@ -124,7 +118,7 @@ class Auth extends CI_Controller
     public function logout()
     {
         // Hapus session
-        $this->session->unset_userdata(['user_id', 'email', 'name', 'logged_in']);
+        $this->session->unset_userdata(['user_id', 'email', 'name', 'role', 'logged_in']);
 
         // Hapus remember me cookie
         delete_cookie('remember_token');
@@ -140,7 +134,7 @@ class Auth extends CI_Controller
         $token = bin2hex(random_bytes(32));
 
         // Simpan token ke database
-        $this->User_model->save_remember_token($user_id, $token);
+        $this->Auth_model->save_remember_token($user_id, $token);
 
         // Set cookie
         $cookie = array(

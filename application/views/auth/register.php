@@ -74,6 +74,11 @@
             transform: translateY(-2px);
         }
 
+        .btn-register:disabled {
+            background: #ccc;
+            transform: none;
+        }
+
         .social-register {
             border-top: 1px solid #e0e0e0;
             padding-top: 20px;
@@ -106,6 +111,60 @@
 
         .twitter {
             background: #1DA1F2;
+        }
+
+        .password-toggle {
+            cursor: pointer;
+            color: #6c757d;
+            transition: color 0.3s;
+        }
+
+        .password-toggle:hover {
+            color: #1e3c72;
+        }
+
+        .password-strength {
+            height: 5px;
+            margin-top: 5px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .strength-weak {
+            background-color: #dc3545;
+            width: 25%;
+        }
+
+        .strength-medium {
+            background-color: #ffc107;
+            width: 50%;
+        }
+
+        .strength-strong {
+            background-color: #28a745;
+            width: 100%;
+        }
+
+        .form-text {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         /* Responsive Styles */
@@ -231,7 +290,7 @@
                             </div>
                         <?php endif; ?>
 
-                        <form action="<?= base_url('auth/register') ?>" method="post">
+                        <form action="<?= base_url('auth/register') ?>" method="post" id="registerForm">
                             <div class="row">
                                 <div class="col-md-6 mb-4">
                                     <label class="form-label">First Name</label>
@@ -240,7 +299,7 @@
                                             <i class="fas fa-user text-muted"></i>
                                         </span>
                                         <input type="text" name="first_name" class="form-control"
-                                            placeholder="Enter first name" required>
+                                            placeholder="Enter first name" required minlength="2" maxlength="50">
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-4">
@@ -250,7 +309,7 @@
                                             <i class="fas fa-user text-muted"></i>
                                         </span>
                                         <input type="text" name="last_name" class="form-control"
-                                            placeholder="Enter last name" required>
+                                            placeholder="Enter last name" required minlength="2" maxlength="50">
                                     </div>
                                 </div>
                             </div>
@@ -262,8 +321,9 @@
                                         <i class="fas fa-envelope text-muted"></i>
                                     </span>
                                     <input type="email" name="email" class="form-control" placeholder="Enter your email"
-                                        required>
+                                        required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
                                 </div>
+                                <div class="form-text">We'll never share your email with anyone else.</div>
                             </div>
 
                             <div class="mb-4">
@@ -272,9 +332,15 @@
                                     <span class="input-group-text bg-light">
                                         <i class="fas fa-lock text-muted"></i>
                                     </span>
-                                    <input type="password" name="password" class="form-control"
-                                        placeholder="Create password" required>
+                                    <input type="password" name="password" id="password" class="form-control"
+                                        placeholder="Create password" required minlength="8">
+                                    <span class="input-group-text bg-light password-toggle"
+                                        onclick="togglePassword('password')">
+                                        <i class="fas fa-eye"></i>
+                                    </span>
                                 </div>
+                                <div class="password-strength" id="passwordStrength"></div>
+                                <div class="form-text">Password must be at least 8 characters long.</div>
                             </div>
 
                             <div class="mb-4">
@@ -283,8 +349,12 @@
                                     <span class="input-group-text bg-light">
                                         <i class="fas fa-lock text-muted"></i>
                                     </span>
-                                    <input type="password" name="confirm_password" class="form-control"
-                                        placeholder="Confirm password" required>
+                                    <input type="password" name="confirm_password" id="confirmPassword"
+                                        class="form-control" placeholder="Confirm password" required>
+                                    <span class="input-group-text bg-light password-toggle"
+                                        onclick="togglePassword('confirmPassword')">
+                                        <i class="fas fa-eye"></i>
+                                    </span>
                                 </div>
                             </div>
 
@@ -297,8 +367,10 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-register btn-primary w-100 mb-4">Create
-                                Account</button>
+                            <button type="submit" class="btn btn-register btn-primary w-100 mb-4" id="submitBtn">
+                                <span class="loading-spinner" id="loadingSpinner"></span>
+                                Create Account
+                            </button>
 
                             <div class="text-center">
                                 <p class="mb-0">Already have an account?
@@ -338,6 +410,70 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = input.nextElementSibling.querySelector('i');
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        function checkPasswordStrength(password) {
+            const strengthBar = document.getElementById('passwordStrength');
+            let strength = 0;
+
+            if (password.length >= 8) strength += 1;
+            if (password.match(/[a-z]+/)) strength += 1;
+            if (password.match(/[A-Z]+/)) strength += 1;
+            if (password.match(/[0-9]+/)) strength += 1;
+            if (password.match(/[^a-zA-Z0-9]+/)) strength += 1;
+
+            strengthBar.className = 'password-strength';
+            if (strength <= 2) {
+                strengthBar.classList.add('strength-weak');
+            } else if (strength <= 4) {
+                strengthBar.classList.add('strength-medium');
+            } else {
+                strengthBar.classList.add('strength-strong');
+            }
+        }
+
+        document.getElementById('password').addEventListener('input', function (e) {
+            checkPasswordStrength(e.target.value);
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', function (e) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const submitBtn = document.getElementById('submitBtn');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                alert('Passwords do not match!');
+                return;
+            }
+
+            // Simple password validation - just check length
+            if (password.length < 8) {
+                e.preventDefault();
+                alert('Password must be at least 8 characters long.');
+                return;
+            }
+
+            // Show loading state
+            submitBtn.disabled = true;
+            loadingSpinner.style.display = 'inline-block';
+        });
+    </script>
 </body>
 
 </html>

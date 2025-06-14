@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------
@@ -74,15 +74,15 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
-	'dsn'	=> '',
-	// 'hostname' => 'localhost',
-	// 'username' => 'root',
-	// 'password' => '',
-	// 'database' => 'expanse',
-	'hostname' => '153.92.15.11',
-	'username' => 'u150805813_expanses',
-	'password' => '1234Lima!',
-	'database' => 'u150805813_expanses',
+	'dsn' => '',
+	'hostname' => 'localhost',
+	'username' => 'root',
+	'password' => '',
+	'database' => 'expanse',
+	// 'hostname' => '153.92.15.11',
+	// 'username' => 'u150805813_expanses',
+	// 'password' => '1234Lima!',
+	// 'database' => 'u150805813_expanses',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

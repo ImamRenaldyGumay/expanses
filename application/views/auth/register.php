@@ -284,12 +284,26 @@
                             <p class="text-muted">Join our financial management system</p>
                         </div>
 
-                        <?php if ($this->session->flashdata('error')): ?>
-                            <div class="alert alert-danger">
-                                <?= $this->session->flashdata('error') ?>
-                            </div>
-                        <?php endif; ?>
+                        <?php echo validation_errors(); ?>
 
+                        <!-- <?php if ($this->session->flashdata('error')): ?>
+                            <script>
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Gagal!',
+                                    text: '<?= $this->session->flashdata('error') ?>',
+                                });
+                            </script>
+                        <?php endif; ?> -->
+                        <?php if (validation_errors()): ?>
+                            <script>
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Validasi Gagal!',
+                                    html: `<?= str_replace("\n", '<br>', validation_errors('<div>', '</div>')) ?>`,
+                                });
+                            </script>
+                        <?php endif; ?>
                         <form action="<?= base_url('auth/register') ?>" method="post" id="registerForm">
                             <div class="row">
                                 <div class="col-md-6 mb-4">
@@ -410,6 +424,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function togglePassword(inputId) {
             const input = document.getElementById(inputId);
@@ -426,25 +441,25 @@
             }
         }
 
-        function checkPasswordStrength(password) {
-            const strengthBar = document.getElementById('passwordStrength');
-            let strength = 0;
+        // function checkPasswordStrength(password) {
+        //     const strengthBar = document.getElementById('passwordStrength');
+        //     let strength = 0;
 
-            if (password.length >= 8) strength += 1;
-            if (password.match(/[a-z]+/)) strength += 1;
-            if (password.match(/[A-Z]+/)) strength += 1;
-            if (password.match(/[0-9]+/)) strength += 1;
-            if (password.match(/[^a-zA-Z0-9]+/)) strength += 1;
+        //     if (password.length >= 8) strength += 1;
+        //     if (password.match(/[a-z]+/)) strength += 1;
+        //     if (password.match(/[A-Z]+/)) strength += 1;
+        //     if (password.match(/[0-9]+/)) strength += 1;
+        //     if (password.match(/[^a-zA-Z0-9]+/)) strength += 1;
 
-            strengthBar.className = 'password-strength';
-            if (strength <= 2) {
-                strengthBar.classList.add('strength-weak');
-            } else if (strength <= 4) {
-                strengthBar.classList.add('strength-medium');
-            } else {
-                strengthBar.classList.add('strength-strong');
-            }
-        }
+        //     strengthBar.className = 'password-strength';
+        //     if (strength <= 2) {
+        //         strengthBar.classList.add('strength-weak');
+        //     } else if (strength <= 4) {
+        //         strengthBar.classList.add('strength-medium');
+        //     } else {
+        //         strengthBar.classList.add('strength-strong');
+        //     }
+        // }
 
         document.getElementById('password').addEventListener('input', function (e) {
             checkPasswordStrength(e.target.value);
@@ -458,14 +473,22 @@
 
             if (password !== confirmPassword) {
                 e.preventDefault();
-                alert('Passwords do not match!');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: 'Passwords do not match!',
+                });
                 return;
             }
 
             // Simple password validation - just check length
             if (password.length < 8) {
                 e.preventDefault();
-                alert('Password must be at least 8 characters long.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: 'Password must be at least 8 characters long.',
+                });
                 return;
             }
 

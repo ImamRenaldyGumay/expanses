@@ -7,7 +7,8 @@ class Auth extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('Auth_model');
+        $this->load->model('auth_model', 'Auth_model');
+        $this->load->library('form_validation');
     }
 
     public function index()
@@ -43,6 +44,9 @@ class Auth extends CI_Controller
 
             // Cek user di database
             $user = $this->Auth_model->login($email, $password);
+
+            // var_dump($user);
+            // exit;
 
             if ($user) {
                 // Set session
@@ -105,12 +109,16 @@ class Auth extends CI_Controller
                 'created_at' => date('Y-m-d H:i:s')
             );
 
-            if ($this->Auth_model->register($data)) {
+            $register = $this->Auth_model->register($data);
+
+            if ($register) {
                 $this->session->set_flashdata('success', 'Registrasi berhasil! Silakan login.');
                 redirect('auth/login');
             } else {
-                $this->session->set_flashdata('error', 'Registrasi gagal! Silakan coba lagi.');
-                redirect('auth/register');
+                $data['register_error'] = 'Registrasi gagal! Silakan coba lagi.';
+                $this->load->view('templates/header', $data);
+                $this->load->view('auth/register');
+                $this->load->view('templates/footer');
             }
         }
     }
@@ -174,4 +182,3 @@ class Auth extends CI_Controller
         redirect('auth/login');
     }
 }
-?>
